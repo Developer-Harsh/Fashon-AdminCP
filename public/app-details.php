@@ -1,3 +1,7 @@
+<?php
+include('../api/save_details.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,56 +30,62 @@
 
                         <br>
 
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="card">
-                                    <img src="../assets/images/products/s4.jpg" class="card-img-top" alt="...">
-                                    <a href="edit-product" class="btn btn-primary w-100 py-1 fs-1 rounded-1">Change Logo</a>
+                        <form action="../api/save_details" method="POST" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img id="logo-preview"
+                                        src="<?php echo isset($settings['logo']) && !empty($settings['logo']) ? $settings['logo'] : '../assets/images/profile/user-1.jpg'; ?>"
+                                        class="card-img-top" style="border-radius:14px !important;margin-bottom:10px;"
+                                        alt="...">
+                                    <input type="file" name="logo" class="form-control" id="logo" accept="image/*"
+                                        onchange="previewImage(event)" required>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="titleExample" class="form-label">Site Name Title</label>
-                            <input type="text" class="form-control" id="title" aria-describedby="titleHelp"
-                                placeholder="Type title">
-                            <div id="titleHelp" class="form-text">Add your site name here.
+                            <br>
+
+                            <div class="mb-3">
+                                <label for="titleExample" class="form-label">Site Name Title</label>
+                                <input type="text" name="site_name" class="form-control" id="title"
+                                    aria-describedby="titleHelp" placeholder="Type title"
+                                    value="<?php echo htmlspecialchars($settings['site_name'] ?? ''); ?>">
+                                <div id="titleHelp" class="form-text">Add your site name here.</div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="shortNoteExample" class="form-label">Short Note</label>
-                            <input type="text" class="form-control" id="shortNote" aria-describedby="shortNoteHelp"
-                                placeholder="Type short note">
-                            <div id="shortNoteHelp" class="form-text">Enter your site short note here.
+                            <div class="mb-3">
+                                <label for="shortNoteExample" class="form-label">Short Note</label>
+                                <input type="text" name="short_note" class="form-control" id="shortNote"
+                                    aria-describedby="shortNoteHelp" placeholder="Type short note"
+                                    value="<?php echo htmlspecialchars($settings['short_note'] ?? ''); ?>">
+                                <div id="shortNoteHelp" class="form-text">Enter your site short note here.</div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="keywordsExample" class="form-label">Site Keywords</label>
-                            <input type="text" class="form-control" id="keywords" aria-describedby="keywordsHelp"
-                                placeholder="Type keywords">
-                            <div id="keywordsHelp" class="form-text">Enter your site keywords here.
+                            <div class="mb-3">
+                                <label for="keywordsExample" class="form-label">Site Keywords</label>
+                                <input type="text" name="keywords" class="form-control" id="keywords"
+                                    aria-describedby="keywordsHelp" placeholder="Type keywords"
+                                    value="<?php echo htmlspecialchars($settings['keywords'] ?? ''); ?>">
+                                <div id="keywordsHelp" class="form-text">Enter your site keywords here.</div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="longDescExample" class="form-label">Terms of Service</label>
-                            <textarea class="form-control" id="termsDesc" aria-describedby="longDescHelp"
-                                placeholder="Type terms of service"></textarea>
-                            <div id="longDescHelp" class="form-text">Enter your terms of service here.
+                            <div class="mb-3">
+                                <label for="termsDesc" class="form-label">Terms of Service</label>
+                                <textarea name="terms_of_service" class="form-control" id="termsDesc"
+                                    aria-describedby="longDescHelp"
+                                    placeholder="Type terms of service"><?php echo htmlspecialchars($settings['terms_of_service'] ?? ''); ?></textarea>
+                                <div id="longDescHelp" class="form-text">Enter your terms of service here.</div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="longDescExample" class="form-label">Privacy Policy</label>
-                            <textarea class="form-control" id="privacyDesc" aria-describedby="longDescHelp"
-                                placeholder="Type privacy policy"></textarea>
-                            <div id="longDescHelp" class="form-text">Enter your privacy policy here.
+                            <div class="mb-3">
+                                <label for="privacyDesc" class="form-label">Privacy Policy</label>
+                                <textarea name="privacy_policy" class="form-control" id="privacyDesc"
+                                    aria-describedby="longDescHelp"
+                                    placeholder="Type privacy policy"><?php echo htmlspecialchars($settings['privacy_policy'] ?? ''); ?></textarea>
+                                <div id="longDescHelp" class="form-text">Enter your privacy policy here.</div>
                             </div>
-                        </div>
 
-                        <a href="#" class="btn btn-primary">Save</a>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
                     </div>
                 </div>
                 <div class="py-6 px-6 text-center">
@@ -93,7 +103,7 @@
     <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
-    
+
     <script type="importmap">
         {
                 "imports": {
@@ -126,7 +136,7 @@
         .then( /* ... */ )
         .catch( /* ... */ );
 
-            ClassicEditor
+    ClassicEditor
         .create(document.querySelector('#termsDesc'), {
             plugins: [Essentials, Bold, Italic, Font, Paragraph],
             toolbar: {
@@ -138,6 +148,23 @@
         })
         .then( /* ... */ )
         .catch( /* ... */ );
+    </script>
+    <script>
+    function previewImage(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        const preview = document.getElementById('logo-preview');
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
     </script>
 </body>
 
