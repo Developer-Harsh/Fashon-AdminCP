@@ -60,7 +60,7 @@
                                         <td>
                                             <ul>
                                                 <li>
-                                                    <a href="#"><i class="ti ti-edit"></i> Edit</a>
+                                                    <a href="edit-user"><i class="ti ti-edit"></i> Edit</a>
                                                 </li>
                                                 <li>
                                                     <a href="#"><i class="ti ti-trash"></i> Delete</a>
