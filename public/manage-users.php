@@ -55,8 +55,8 @@ $result = $conn->query($sql);
 
                     <div class="mb-3">
                         <input type="search" class="form-control" id="searchProducts" aria-describedby="searchHelp"
-                            placeholder="Search Products...">
-                        <div id="searchHelp" class="form-text">Search any product by typing title description or any
+                            placeholder="Search Users...">
+                        <div id="searchHelp" class="form-text">Search any users by typing title description or any
                             keywords
                         </div>
                     </div>
@@ -91,7 +91,7 @@ $result = $conn->query($sql);
                                                 echo "<td>
                                                         <ul>
                                                             <li><a href='edit-user?id=" . urlencode($row['id']) . "'><i class='ti ti-edit'></i> Edit</a></li>
-                                                            <li><a href='../api/delete_user?id=" . urlencode($row['id']) . "'><i class='ti ti-trash'></i> Delete</a></li>
+                                                            <li><a href='../api/delete_user?id=" . urlencode($row['id']) . "' onclick=\"return confirm('Are you sure you want to delete this user?');\"><i class='ti ti-trash'></i> Delete</a></li>
                                                         </ul>
                                                     </td>";
                                                 echo "</tr>";

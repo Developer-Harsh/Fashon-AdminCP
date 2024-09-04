@@ -21,37 +21,43 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title fw-semibold mb-4">Add Categories</h5>
-                        <p class="mb-0">Here you can add your application's products categories </p>
+                        <h5 class="card-title fw-semibold mb-4">Add Category</h5>
+                        <p class="mb-0">Here you can add your application's products category </p>
 
                         <br>
 
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="card">
-                                    <img src="../assets/images/products/s4.jpg" class="card-img-top" alt="...">
-                                    <a href="edit-product" class="btn btn-primary w-100 py-1 fs-1 rounded-1">Change</a>
+                        <form action="../api/save_category" method="POST" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img id="logo-preview"
+                                        src="<?php echo isset($settings['image']) && !empty($settings['image']) ? $settings['image'] : '../assets/images/profile/user-1.jpg'; ?>"
+                                        class="card-img-top" style="border-radius:14px !important;margin-bottom:10px;"
+                                        alt="...">
+                                    <input type="file" name="image" class="form-control" id="image" accept="image/*"
+                                        onchange="previewImage(event)" required>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="categoryExample" class="form-label">Product Category</label>
-                            <input type="text" class="form-control" id="category" aria-describedby="categoryHelp"
-                                placeholder="Type category">
-                            <div id="categoryHelp" class="form-text">Enter your category name here.
+                            <br>
+
+                            <div class="mb-3">
+                                <label for="categoryExample" class="form-label">Product Category</label>
+                                <input type="text" class="form-control" name="name" id="name" aria-describedby="categoryHelp"
+                                    placeholder="Type category">
+                                <div id="categoryHelp" class="form-text">Enter your category name here.
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="shortNoteExample" class="form-label">Short Note</label>
-                            <input type="text" class="form-control" id="shortNote" aria-describedby="shortNoteHelp"
-                                placeholder="Type short note">
-                            <div id="shortNoteHelp" class="form-text">Enter your category short note here.
+                            <div class="mb-3">
+                                <label for="shortNoteExample" class="form-label">Short Note</label>
+                                <input type="text" class="form-control" name="description" id="description" aria-describedby="shortNoteHelp"
+                                    placeholder="Type short note">
+                                <div id="shortNoteHelp" class="form-text">Enter your category short note here.
+                                </div>
                             </div>
-                        </div>
 
-                        <a href="#" class="btn btn-primary">Save</a>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
                     </div>
                 </div>
                 <div class="py-6 px-6 text-center">
@@ -71,6 +77,23 @@
     <script src="../assets/js/dashboard.js"></script>
     <script>
     CKEDITOR.replace('longDesc');
+    </script>
+    <script>
+    function previewImage(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        const preview = document.getElementById('logo-preview');
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
     </script>
 </body>
 

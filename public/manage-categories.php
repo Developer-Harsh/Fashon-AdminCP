@@ -1,3 +1,18 @@
+<?php
+include('../api/config/config.php');
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+$message = isset($_GET['message']) ? $_GET['message'] : null;
+$alert = isset($_GET['alert']) ? $_GET['alert'] : null;
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT * FROM categories";
+$result = $conn->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,6 +33,18 @@
         <div class="body-wrapper">
             <?php include('components/header.php') ?>
             <div class="container-fluid">
+            <?php 
+                if (isset($message)) {
+                    echo "<div class='alert alert-success' role='alert'>
+                            $message
+                        </div>";
+                }
+                if (isset($alert)) {
+                    echo "<div class='alert alert-danger' role='alert'>
+                            $message
+                        </div>";
+                }
+            ?>
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title fw-semibold mb-4">Manage Categories</h5>
@@ -51,38 +78,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <?php if ($result->num_rows > 0): ?>
+                                    <?php while($row = $result->fetch_assoc()): ?>
+                                        <tr>
+                                            <td><img src="<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>"
+                                                    height="50px" width="50px"></td>
+                                            <td><?php echo htmlspecialchars($row['name']); ?></td>
+                                            <td><?php echo htmlspecialchars($row['description']); ?></td>
+                                            <td>
+                                                <ul>
+                                                    <li>
+                                                        <a href="edit-categories?id=<?php echo $row['id']; ?>"><i class="ti ti-edit"></i> Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="../api/delete_category?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this category?');"><i class="ti ti-trash"></i> Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
                                     <tr>
-                                        <td><img src="../assets/images/products/s5.jpg" alt="Category image"
-                                                height="50px" width="50px"></td>
-                                        <td>Kids</td>
-                                        <td>Here you can find kids related products.</td>
-                                        <td>
-                                            <ul>
-                                                <li>
-                                                    <a href="edit-categories"><i class="ti ti-edit"></i> Edit</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><i class="ti ti-trash"></i> Delete</a>
-                                                </li>
-                                            </ul>
-                                        </td>
+                                        <td colspan="4">No categories found.</td>
                                     </tr>
-                                    <tr>
-                                        <td><img src="../assets/images/products/s7.jpg" alt="Category image"
-                                                height="50px" width="50px"></td>
-                                        <td>Mens</td>
-                                        <td>Here you can find mens related products.</td>
-                                        <td>
-                                            <ul>
-                                                <li>
-                                                    <a href="edit-categories"><i class="ti ti-edit"></i> Edit</a>
-                                                </li>
-                                                <li>
-                                                    <a href="#"><i class="ti ti-trash"></i> Delete</a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
+                                <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

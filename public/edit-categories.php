@@ -1,3 +1,8 @@
+<?php
+$id = $_GET['id'];
+
+include('../api/update_category.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,32 +30,38 @@
 
                         <br>
 
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="card">
-                                    <img src="../assets/images/products/s4.jpg" class="card-img-top" alt="...">
-                                    <a href="edit-product" class="btn btn-primary w-100 py-1 fs-1 rounded-1">Change</a>
+                        <form action="<?php "../api/update_category?id=" . $id ?>" method="POST" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img id="logo-preview"
+                                        src="<?php echo isset($settings['image']) && !empty($settings['image']) ? $settings['image'] : '../assets/images/profile/user-1.jpg'; ?>"
+                                        class="card-img-top" style="border-radius:14px !important;margin-bottom:10px;"
+                                        alt="...">
+                                    <input type="file" name="image" class="form-control" id="image" accept="image/*"
+                                        onchange="previewImage(event)">
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="categoryExample" class="form-label">Product Category</label>
-                            <input type="text" class="form-control" id="category" aria-describedby="categoryHelp"
-                                placeholder="Type category">
-                            <div id="categoryHelp" class="form-text">Edit your category name here.
+                            <br>
+
+                            <div class="mb-3">
+                                <label for="categoryExample" class="form-label">Product Category</label>
+                                <input type="text" class="form-control" name="name" id="name"
+                                    aria-describedby="categoryHelp" placeholder="Type category" value="<?php echo isset($settings['name']) ? htmlspecialchars($settings['name']) : ''; ?>">
+                                <div id="categoryHelp" class="form-text">Edit your category name here.
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="shortNoteExample" class="form-label">Short Note</label>
-                            <input type="text" class="form-control" id="shortNote" aria-describedby="shortNoteHelp"
-                                placeholder="Type short note">
-                            <div id="shortNoteHelp" class="form-text">Edit your category short note here.
+                            <div class="mb-3">
+                                <label for="shortNoteExample" class="form-label">Short Note</label>
+                                <input type="text" class="form-control" name="description" id="description"
+                                    aria-describedby="shortNoteHelp" placeholder="Type short note" value="<?php echo isset($settings['description']) ? htmlspecialchars($settings['description']) : ''; ?>">
+                                <div id="shortNoteHelp" class="form-text">Edit your category short note here.
+                                </div>
                             </div>
-                        </div>
 
-                        <a href="#" class="btn btn-primary">Save</a>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </form>
                     </div>
                 </div>
                 <div class="py-6 px-6 text-center">
