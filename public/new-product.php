@@ -26,7 +26,8 @@
 
                         <br>
 
-                        <a href="edit-product" class="btn btn-primary" style="background: #eee; color:#000;">Add Image</a>
+                        <a href="edit-product" class="btn btn-primary" style="background: #eee; color:#000;">Add
+                            Image</a>
 
                         <br>
                         <br>
@@ -102,6 +103,11 @@
                         <a href="#" class="btn btn-primary">Save</a>
                     </div>
                 </div>
+                <div class="py-6 px-6 text-center">
+                    <p class="mb-0 fs-4">Developed by HK Singh on <a href="https://github.com/Developer-Harsh/"
+                            target="_blank" class="pe-1 text-primary text-decoration-underline">Gihtub>
+                            Developer-Harsh</a></p>
+                </div>
             </div>
         </div>
     </div>
@@ -112,7 +118,7 @@
     <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
-    
+
     <script type="importmap">
         {
                 "imports": {
@@ -145,7 +151,7 @@
         .then( /* ... */ )
         .catch( /* ... */ );
     </script>
-    
+
 </body>
 
 </html>
