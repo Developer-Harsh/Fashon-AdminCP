@@ -1,3 +1,9 @@
+<?php
+$userId = $_GET['id'];
+
+include('../api/save_user.php');
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,59 +30,67 @@
                         <p class="mb-0">Here you can edit your application's user </p>
 
                         <br>
-
-                        <div class="row">
-                            <div class="col-md-2">
-                                <div class="card">
-                                    <img src="../assets/images/products/s4.jpg" class="card-img-top" alt="...">
-                                    <a href="edit-product" class="btn btn-primary w-100 py-1 fs-1 rounded-1">Change</a>
+                        <form action="<?php "../api/save_user?id=" . $userId ?>" method="POST" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img id="logo-preview" src="<?php echo htmlspecialchars($user['profile_image']); ?>"
+                                        class="card-img-top" style="border-radius:14px !important;margin-bottom:10px;"
+                                        alt="...">
+                                    <input type="file" name="logo" class="form-control" id="logo" accept="image/*"
+                                        onchange="previewImage(event)">
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" aria-describedby="nameHelp"
-                                placeholder="Type name">
-                            <div id="nameHelp" class="form-text">Edit user's name here.</div>
-                        </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                    aria-describedby="nameHelp" placeholder="Type name"
+                                    value="<?php echo htmlspecialchars($user['name']); ?>">
+                                <div id="nameHelp" class="form-text">Edit user's name here.</div>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
-                                placeholder="Type email">
-                            <div id="emailHelp" class="form-text">Edit user's email here.</div>
-                        </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    aria-describedby="emailHelp" placeholder="Type email"
+                                    value="<?php echo htmlspecialchars($user['email']); ?>">
+                                <div id="emailHelp" class="form-text">Edit user's email here.</div>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="phone" aria-describedby="phoneHelp"
-                                placeholder="Type phone number">
-                            <div id="phoneHelp" class="form-text">Edit user's phone number here.</div>
-                        </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone"
+                                    aria-describedby="phoneHelp" placeholder="Type phone number"
+                                    value="<?php echo htmlspecialchars($user['phone']); ?>">
+                                <div id="phoneHelp" class="form-text">Edit user's phone number here.</div>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="address" aria-describedby="addressHelp"
-                                placeholder="Type address">
-                            <div id="addressHelp" class="form-text">Edit user's address here.</div>
-                        </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" name="address"
+                                    aria-describedby="addressHelp" placeholder="Type address"
+                                    value="<?php echo htmlspecialchars($user['address']); ?>">
+                                <div id="addressHelp" class="form-text">Edit user's address here.</div>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" aria-describedby="passwordHelp"
-                                placeholder="Type password">
-                            <div id="passwordHelp" class="form-text">Edit user's password here.</div>
-                        </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    aria-describedby="passwordHelp" placeholder="Type password">
+                                <div id="passwordHelp" class="form-text">Edit user's password here (leave blank to keep
+                                    unchanged).</div>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="upi" class="form-label">UPI for Refund</label>
-                            <input type="text" class="form-control" id="upi" aria-describedby="upiHelp"
-                                placeholder="Type UPI ID for refund">
-                            <div id="upiHelp" class="form-text">Edit user's UPI ID for refunds here.</div>
-                        </div>
+                            <div class="mb-3">
+                                <label for="upi" class="form-label">UPI for Refund</label>
+                                <input type="text" class="form-control" id="upi" name="upi" aria-describedby="upiHelp"
+                                    placeholder="Type UPI ID for refund"
+                                    value="<?php echo htmlspecialchars($user['upi_id']); ?>">
+                                <div id="upiHelp" class="form-text">Edit user's UPI ID for refunds here.</div>
+                            </div>
 
-                        <a href="#" class="btn btn-primary">Save</a>
+                            <button type="submit" href="#" class="btn btn-primary">Save</button>
+                        </form>
                     </div>
                 </div>
                 <div class="py-6 px-6 text-center">
@@ -95,7 +109,21 @@
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
     <script>
-    CKEDITOR.replace('longDesc');
+    function previewImage(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        const preview = document.getElementById('logo-preview');
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
     </script>
 </body>
 
