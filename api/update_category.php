@@ -15,7 +15,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM categories WHERE id = $id";
+$sql = "SELECT * FROM products WHERE id = $id";
 $result = $conn->query($sql);
 $settings = $result->fetch_assoc();
 

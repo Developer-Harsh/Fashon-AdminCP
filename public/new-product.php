@@ -44,7 +44,7 @@ $result = $conn->query($sql);
                         <br>
                         <br>
 
-                        <form action="../api/save_product.php" method="POST" enctype="multipart/form-data">
+                        <form action="../api/save_product" method="POST" enctype="multipart/form-data">
                             <div class="row" id="image-container">
                                 <div class="col-md-2">
                                     <img id="one-preview"
@@ -164,7 +164,7 @@ $result = $conn->query($sql);
 
                             <div class="mb-3">
                                 <label for="longDescExample" class="form-label">Product Long Description</label>
-                                <textarea class="form-control" name="long_desc" id="long_desc"
+                                <textarea class="form-control" name="long_description" id="long_description"
                                     aria-describedby="longDescHelp" placeholder="Type long description"></textarea>
                                 <div id="longDescHelp" class="form-text">Enter your product's long description here.
                                 </div>
