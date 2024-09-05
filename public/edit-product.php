@@ -151,7 +151,23 @@
         .then( /* ... */ )
         .catch( /* ... */ );
     </script>
+<script>
+    function previewImage(event) {
+        const fileInput = event.target;
+        const file = fileInput.files[0];
+        const preview = document.getElementById('logo-preview');
 
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+    </script>
 </body>
 
 </html>

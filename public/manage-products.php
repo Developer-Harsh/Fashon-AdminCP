@@ -1,3 +1,18 @@
+<?php
+include('../api/config/config.php');
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+$message = isset($_GET['message']) ? $_GET['message'] : null;
+$alert = isset($_GET['alert']) ? $_GET['alert'] : null;
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$sql = "SELECT * FROM products";
+$result = $conn->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,6 +33,18 @@
         <div class="body-wrapper">
             <?php include('components/header.php') ?>
             <div class="container-fluid">
+                <?php 
+                if (isset($message)) {
+                    echo "<div class='alert alert-success' role='alert'>
+                            $message
+                        </div>";
+                }
+                if (isset($alert)) {
+                    echo "<div class='alert alert-danger' role='alert'>
+                            $message
+                        </div>";
+                }
+            ?>
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title fw-semibold mb-4">Manage Products</h5>
@@ -28,10 +55,11 @@
                         <div class="mb-3">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="search" class="form-control" id="searchProducts" aria-describedby="searchHelp" placeholder="Search Products...">
+                                    <input type="search" class="form-control" id="searchProducts"
+                                        aria-describedby="searchHelp" placeholder="Search Products...">
                                 </div>
                                 <div class="col-md-4">
-                                <a href="new-product" class="btn btn-primary">Add Product</a>
+                                    <a href="new-product" class="btn btn-primary">Add Product</a>
                                 </div>
                             </div>
                             <div id="searchHelp" class="form-text">Search any product by typing title description or any
@@ -55,26 +83,38 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php if ($result->num_rows > 0): ?>
+                                    <?php while($row = $result->fetch_assoc()): ?>
                                     <tr>
-                                        <td><img src="../assets/images/products/s5.jpg" alt="Category image"
-                                                height="50px" width="50px"></td>
-                                        <td>Laptop</td>
-                                        <td>Valuable and end-to-go laptop, purchase now at cheapest price.</td>
-                                        <td>Laptop, Computer, Mouse, Printer</td>
-                                        <td>₹36000</td>
-                                        <td>20%</td>
-                                        <td>Computers</td>
+                                        <td><img src="<?php echo $URL . htmlspecialchars($row['img_one']); ?>"
+                                                alt="<?php echo htmlspecialchars($row['title']); ?>" height="50px"
+                                                width="50px"></td>
+                                        <td><?php echo htmlspecialchars($row['title']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['short_note']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['keywords']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['price']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['discount']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['category']); ?></td>
                                         <td>
                                             <ul>
                                                 <li>
-                                                    <a href="edit-product"><i class="ti ti-edit"></i> Edit</a>
+                                                    <a href="edit-product?id=<?php echo $row['id']; ?>"><i
+                                                            class="ti ti-edit"></i> Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a href="#"><i class="ti ti-trash"></i> Delete</a>
+                                                    <a href="../api/delete_product?id=<?php echo $row['id']; ?>"
+                                                        onclick="return confirm('Are you sure you want to delete this category?');"><i
+                                                            class="ti ti-trash"></i> Delete</a>
                                                 </li>
                                             </ul>
                                         </td>
                                     </tr>
+                                    <?php endwhile; ?>
+                                    <?php else: ?>
+                                    <tr>
+                                        <td colspan="4">No products found.</td>
+                                    </tr>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
